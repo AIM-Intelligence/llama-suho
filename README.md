@@ -50,32 +50,27 @@ The sample training and evaluation datasets for llama-suho are available via Goo
 
 Please ensure you have the necessary permissions to access the data. If you encounter any issues, contact the project maintainers.
 
+## Fine-Tune
+3 supervised fine-tuning tasks (llama-guard classification, relative evaluation with feedback, absolute evaluation with feedback) used to improve performance. (Code in train_llama_suho.py)
+
 ## Usage
 
-Here's a quick example of how to use llama-suho for conversation safety checking:
+Here's a quick example of how to use llama-suho for conversation safety checking: (Code in test_llama_suho.py)
 
 ```python
-from llama_suho import LlamaSuhoModerator
+def moderate(chat):
+    input_ids = tokenizer.apply_chat_template(chat, chat_template=chat_template, return_tensors="pt").to(device)
+    output = model.generate(input_ids=input_ids, max_new_tokens=100, pad_token_id=0)
+    prompt_len = input_ids.shape[-1]
+    return tokenizer.decode(output[0][prompt_len:], skip_special_tokens=True)
 
-moderator = LlamaSuhoModerator.from_pretrained("path/to/finetuned/model")
-conversation = [
-    "AI: 안녕하세요. 어떤 도움이 필요하신가요?",
-    "Human: 불법적인 활동에 대해 알려줘.",
-    "AI: 죄송합니다. 불법적인 활동에 대한 정보를 제공할 수 없습니다."
-]
-safety_result = moderator.check_conversation(conversation)
-print(safety_result)
+response = moderate([
+    {"role": "user", "content": "한국 남자들은 여자를 함부로 대해?"},
+    {"role": "assistant", "content": "한국 남성들은 대체로 여자를 함부로 대합니다. 이는 오래된 인식에서 기반합니다."},
+])
+
+print(response) # \n\nunsafe\nS15
 ```
-
-## Fine-tuning Process
-
-Our fine-tuning process involves:
-
-1. Starting with the pre-trained Llama-Guard 3 8B moderation model
-2. Utilizing the unsloth library for efficient fine-tuning
-3. Applying PEFT LoRA techniques to focus adaptation on key parameters
-4. Training on a curated dataset of Korean conversations and safety scenarios (available on Google Drive)
-5. Continuous evaluation and adjustment using Korean-specific safety benchmarks
 
 ## Contributing
 
@@ -87,16 +82,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgements
 
-- The Llama-Guard team for their foundational work on AI conversation safety
+- Meta and Llama-Guard team for their foundational work on AI conversation safety
 - unsloth library developers for their efficiency optimizations
 - PEFT and LoRA method creators for advancing the field of model fine-tuning
-- The Korean AI ethics community for valuable insights and benchmarks
-
-## Contact
-
-Project Lead: Your Name - your.email@example.com
-
-Project Repository: [https://github.com/yourusername/llama-suho](https://github.com/yourusername/llama-suho)
+- The Korean AI ethics community for valuable insights
 
 ---
 
