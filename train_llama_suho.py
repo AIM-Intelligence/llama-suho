@@ -37,11 +37,12 @@ EOS_TOKEN = tokenizer.eos_token
 import datasets
 from datasets import load_dataset
 
+kor_intent_dataset = load_dataset("json", data_files="../data/intents.jsonl")["train"]
 kor_relative_dataset = load_dataset("json", data_files="../data/relative_evaluations.jsonl")["train"]
 kor_absolute_dataset = load_dataset("json", data_files="../data/absolute_evaluations.jsonl")["train"]
 kor_llama_suho_dataset = load_dataset("json", data_files="data/llama_suho.jsonl")["train"]
 
-dataset = datasets.concatenate_datasets([kor_relative_dataset, kor_absolute_dataset, kor_llama_suho_dataset])
+dataset = datasets.concatenate_datasets([kor_intent_dataset, kor_relative_dataset, kor_absolute_dataset, kor_llama_suho_dataset])
 
 def formatting_prompts_func(examples):
     # if examples is not list
@@ -121,7 +122,25 @@ def formatting_prompts_func(examples):
                 tokenize = False,
                 add_generation_prompt = True,
             ) + examples['answer'] + EOS_TOKEN
+        elif examples['type'][i] == 'intent':
+            PROMPT = (
+                "###Task Description:\n"
+                "Write an intent of the given text.\n"
+                "3. Please do not generate any other opening, closing, and explanations.\n\n"
+                "###Text:\n"
+                f"{examples['text'][i]}"
+            )
+            ANSWER = examples['intent'][i]
 
+            text = tokenizer.apply_chat_template(
+                [
+                    {"role": "user", "content": PROMPT},
+                    {"role": "assistant", "content": ANSWER},
+                ],
+                chat_template = chat_template,
+                tokenize = False,
+                add_generation_prompt = False,
+            ) + EOS_TOKEN
         else:
             print("ignoring invalid type")
             raise ValueError("Invalid type")
