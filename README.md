@@ -17,19 +17,8 @@ llama-suho enhances the capabilities of the Llama-Guard moderation model by adap
 - 🚀 Utilizes unsloth for resource-efficient fine-tuning (Single 4090 GPU)
 - 🧠 Implements PEFT LoRA (Low-Rank Adaptation) for optimal parameter-efficient model adaptation
 - 📈 Improves detection of unsafe or inappropriate content in Korean-language AI conversations
-- 📂 Training and evaluation data available via this link [https://llama-suho.aim-intelligence.com]
-
-## Project Architecture
-
-```mermaid
-graph TD
-    A[Llama-Guard 3 8B] --> B[unsloth Library]
-    B --> C[PEFT LoRA Fine-tuning]
-    C --> D[Korea-specific Dataset]
-    D --> E[llama-suho Model]
-    F[Google Drive] --> |Provides Data| D
-    E --> G[AI Conversation Safety Check]
-```
+- 📂 Open Sample Training and evaluation data available
+- Can test model via (gradio) [https://llama-suho.aim-intelligence.com]
 
 ## Performance Metrics
 
@@ -43,10 +32,7 @@ graph TD
 
 ### Prerequisites
 
-- Python 3.8+
-- PyTorch 1.9+
-- unsloth 0.2.0+
-- transformers 4.20.0+
+- can be found inside requirements.txt
 
 ### Installation
 
@@ -58,9 +44,9 @@ pip install -r requirements.txt
 
 ### Data
 
-The training and evaluation datasets for llama-suho are available via Google Drive. You can access them using the following link:
+The sample training and evaluation datasets for llama-suho are available via Google Drive. You can access them using the following link:
 
-[llama-suho Dataset on Google Drive](https://drive.google.com/drive/folders/your-folder-id)
+[llama-suho Dataset on Google Drive](https://drive.google.com/drive/folders/13mWsTBmk8ggGddnlXs6CBhsYhZtTVIQ7?usp=sharing)
 
 Please ensure you have the necessary permissions to access the data. If you encounter any issues, contact the project maintainers.
 
