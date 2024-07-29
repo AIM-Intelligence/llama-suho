@@ -20,14 +20,6 @@ llama-suho enhances the capabilities of the Llama-Guard moderation model by adap
 - 📂 Open Sample Training and evaluation data available
 - Can test model via (gradio) [https://llama-suho.aim-intelligence.com]
 
-## Performance Metrics
-
-| Metric | Base Llama-Guard | llama-suho | Improvement |
-|--------|------------------|------------|-------------|
-| Korean Toxicity Detection | 82.5% | 89.3% | +6.8% |
-| Cultural Sensitivity Accuracy | 78.9% | 86.7% | +7.8% |
-| False Positive Rate | 5.2% | 3.8% | -1.4% |
-
 ## Getting Started
 
 ### Prerequisites
